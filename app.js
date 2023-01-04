@@ -23,6 +23,14 @@ app.get('/mean', (req, res) => {
     let nums;
     if (req.query.nums) {
         nums = req.query.nums.split(',');
+        nums = nums.map(n => {
+            if (isNumber(n)) {
+                return n * 1;
+            }
+            else {
+                throw new MyError(`${n} is not a number!`, 400)
+            }
+        });
         length = nums.length;
 
         for (let num of nums) {
@@ -45,7 +53,14 @@ app.get('/median', (req, res) => {
         // comma separated "nums" to array of "nums" 
         let nums = req.query.nums.split(',');
         // string nums to number nums
-        nums = nums.map(n => n * 1);
+        nums = nums.map(n => {
+            if (isNumber(n)) {
+                return n * 1;
+            }
+            else {
+                throw new MyError(`${n} is not a number!`, 400)
+            }
+        });
         // sort array
         nums = nums.sort((a,b) => a-b);
         
@@ -66,7 +81,7 @@ app.get('/mode', (req, res, next) => {
         let nums = req.query.nums.split(',');
         // string nums to number nums
         nums = nums.map(n => {
-            if (n * 1) {
+            if (isNumber(n)) {
                 return n * 1;
             }
             else {
