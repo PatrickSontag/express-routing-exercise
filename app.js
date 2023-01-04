@@ -59,8 +59,8 @@ app.get('/mode', (req, res) => {
         console.log("nCount: ", nCount);
 
         const mode = Object.keys(nCount).reduce((a, b) => nCount[a] > nCount[b] ? a : b);
-
-        return res.send(`MODE = ${mode}`);
+        const result = { operation: "mode", value: mode };
+        return res.json(result);
         }
 });
 
