@@ -44,6 +44,25 @@ app.get('/median', (req, res) => {
         }
 });
 
+app.get('/mode', (req, res) => {
+    if (req.query.nums) {
+        // comma separated "nums" to array of "nums" 
+        let nums = req.query.nums.split(',');
+        // string nums to number nums
+        nums = nums.map(n => n * 1);
+        // count occurrences of each number
+        let numsTracker = {};
+        for (let num of nums) {
+            if (numsTracker[num]) numsTracker[num] ++;
+            else numsTracker[num] = 1;
+        }
+        console.log("numsTracker: ", numsTracker);
+
+
+        return res.send(`MODE = `);
+        }
+});
+
 app.listen(3000, function() {
 console.log('Server started on port 3000.');
 });
