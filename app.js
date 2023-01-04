@@ -51,15 +51,16 @@ app.get('/mode', (req, res) => {
         // string nums to number nums
         nums = nums.map(n => n * 1);
         // count occurrences of each number
-        let numsTracker = {};
+        let nCount = {};
         for (let num of nums) {
-            if (numsTracker[num]) numsTracker[num] ++;
-            else numsTracker[num] = 1;
+            if (nCount[num]) nCount[num] ++;
+            else nCount[num] = 1;
         }
-        console.log("numsTracker: ", numsTracker);
+        console.log("nCount: ", nCount);
 
+        const mode = Object.keys(nCount).reduce((a, b) => nCount[a] > nCount[b] ? a : b);
 
-        return res.send(`MODE = `);
+        return res.send(`MODE = ${mode}`);
         }
 });
 
