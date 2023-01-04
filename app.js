@@ -38,13 +38,11 @@ app.get('/mean', (req, res) => {
             total += num;
         }
         const mean = total / length;
-        console.log("length: ", length);
         const result = { operation: "mean", value: mean };
 
         return res.json(result);
     }
     throw new MyError("NO INPUT GIVEN", 400);
-    return res.send("MEAN");
 });
 
 app.get('/median', (req, res) => {
@@ -72,7 +70,6 @@ app.get('/median', (req, res) => {
         return res.json(result);
     }
     throw new MyError("NO INPUT GIVEN", 400);
-    return res.send("MEDIAN");
 });
 
 app.get('/mode', (req, res, next) => {
