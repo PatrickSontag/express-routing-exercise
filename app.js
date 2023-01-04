@@ -17,15 +17,20 @@ app.get('/mean', (req, res) => {
     let nums;
     if (req.query.nums) {
         nums = req.query.nums.split(',');
-        length = req.query.nums.length;
+        length = nums.length;
 
         for (let num of nums) {
             num = num * 1;
             total += num;
         }
+        const mean = total / length;
+        console.log("length: ", length);
+        const result = { operation: "mean", value: mean };
+
+        return res.json(result);
     }
-    const mean = total / length;
-    return res.send(`MEAN = ${mean}`);
+
+    return res.send("MEAN");
 });
 
 app.get('/median', (req, res) => {
@@ -40,8 +45,11 @@ app.get('/median', (req, res) => {
         const length = nums.length;
         const middle = Math.floor(length/2);
         const median = nums[middle];
-        return res.send(`MEDIAN = ${median}`);
-        }
+        const result = { operation: "median", value: median };
+
+        return res.json(result);
+    }
+    return res.send("MEDIAN");
 });
 
 app.get('/mode', (req, res) => {
@@ -56,12 +64,11 @@ app.get('/mode', (req, res) => {
             if (nCount[num]) nCount[num] ++;
             else nCount[num] = 1;
         }
-        console.log("nCount: ", nCount);
-
         const mode = Object.keys(nCount).reduce((a, b) => nCount[a] > nCount[b] ? a : b);
         const result = { operation: "mode", value: mode };
         return res.json(result);
-        }
+    }
+    return res.send("MODE");
 });
 
 app.listen(3000, function() {
