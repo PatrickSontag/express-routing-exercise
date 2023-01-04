@@ -5,7 +5,12 @@ const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use((req, res, next) => {
+    console.log("SERVER GOT A REQUEST");
+    next();
+})
 
+const isNumber = (a) => a * 1; 
 
 app.get('/', function(req, res) {
     console.log('root route');
@@ -30,12 +35,13 @@ app.get('/mean', (req, res) => {
 
         return res.json(result);
     }
-    throw new MyError("NO INPUT GIVEN", 403);
+    throw new MyError("NO INPUT GIVEN", 400);
     return res.send("MEAN");
 });
 
 app.get('/median', (req, res) => {
     if (req.query.nums) {
+
         // comma separated "nums" to array of "nums" 
         let nums = req.query.nums.split(',');
         // string nums to number nums
@@ -50,16 +56,23 @@ app.get('/median', (req, res) => {
 
         return res.json(result);
     }
-    throw new MyError("NO INPUT GIVEN", 403);
+    throw new MyError("NO INPUT GIVEN", 400);
     return res.send("MEDIAN");
 });
 
-app.get('/mode', (req, res) => {
+app.get('/mode', (req, res, next) => {
     if (req.query.nums) {
         // comma separated "nums" to array of "nums" 
         let nums = req.query.nums.split(',');
         // string nums to number nums
-        nums = nums.map(n => n * 1);
+        nums = nums.map(n => {
+            if (n * 1) {
+                return n * 1;
+            }
+            else {
+                throw new MyError(`${n} is not a number!`, 400)
+            }
+        });
         // count occurrences of each number
         let nCount = {};
         for (let num of nums) {
@@ -70,9 +83,12 @@ app.get('/mode', (req, res) => {
         const result = { operation: "mode", value: mode };
         return res.json(result);
     }
-    throw new MyError("NO INPUT GIVEN", 403);
-    return res.send("MODE");
+    throw new MyError("NO INPUT GIVEN", 400);
 });
+
+app.use((error, req, res, next) => {
+    res.send("IT'S AN ERROR");
+})
 
 app.listen(3000, function() {
 console.log('Server started on port 3000.');
