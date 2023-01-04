@@ -1,4 +1,5 @@
 const express = require('express');
+const MyError = require('./myError');
 
 const app = express();
 
@@ -29,7 +30,7 @@ app.get('/mean', (req, res) => {
 
         return res.json(result);
     }
-
+    throw new MyError("NO INPUT GIVEN", 403);
     return res.send("MEAN");
 });
 
@@ -49,6 +50,7 @@ app.get('/median', (req, res) => {
 
         return res.json(result);
     }
+    throw new MyError("NO INPUT GIVEN", 403);
     return res.send("MEDIAN");
 });
 
@@ -68,6 +70,7 @@ app.get('/mode', (req, res) => {
         const result = { operation: "mode", value: mode };
         return res.json(result);
     }
+    throw new MyError("NO INPUT GIVEN", 403);
     return res.send("MODE");
 });
 
